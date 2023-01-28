@@ -39,19 +39,33 @@ const MORSE_TABLE = {
 
 function decode(expr) {
     // write your solution here
+    return expr.split('**********').map(decodeWord).join(' ');
+}
+
+function decodeWord(word) {
+    let tmp = []
+    for (let i = 1; i <= word.length; i += 10) {
+        tmp.push(word.slice(i-1, i+9));
+    }
+    return tmp.map(decodeLetter).join('');
+}
+
+function decodeLetter(numbers) {
+    const code = getMorse(numbers);
+    return MORSE_TABLE[code]
+}
+
+function getMorse(code) {
     let res = '';
-    console.log(expr.split('**********').map(function (word) {
-        let tmp = word.split('');
-        let res = ''
-        for (let i = 1; i <= 8; i += 2) {
-            if (word.slice(i-1, i+1) === '10') {
-                res += '.'
-            } else if (word.slice(i-1, i+1) === '11') {
-                res += '-'
-            };
+    for (let i = 1; i <= 10; i += 2) {
+        let v = code.slice(i-1, i+1);
+        if (v === '10') {
+            res += '.';
+        } else if (v === '11') {
+            res += '-'
         };
-        return res;
-    }))
+    }
+    return res;
 }
 
 module.exports = {
